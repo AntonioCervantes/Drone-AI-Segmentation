@@ -21,7 +21,14 @@ OUT_PATH: str = r"C:\Users\pedri\Desktop\ME 297-01_Deep_Learning\Aruco-classific
 tag_dict: str  = "DICT_6X6_50"
 tag_id: int    = 1
 
-def main(tag_dict: str, tag_id: str) -> None:
+# Main Program
+def create_marker(tag_dict: str, tag_id: str) -> None:
+    """ Create an ArUco Marker.
+
+        Parameters:
+        tag_dict: a compatabible ArUco dictionary key
+        tag_id: a comptabible ID
+    """
     # Create filename
     filename: str = f"{tag_dict}_id{tag_id}.png"
     if DEBUG: print(os.path.join(OUT_PATH, filename))
@@ -42,4 +49,4 @@ def main(tag_dict: str, tag_id: str) -> None:
 
 if __name__ == "__main__":
     for i in range(tag_id, 11, 1): # Creates 10 IDs
-        main(tag_dict, i)
+        create_marker(tag_dict, i)
