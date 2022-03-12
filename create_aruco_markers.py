@@ -4,7 +4,6 @@
     Author:         Christian Pedrigal, pedrigalchristian@gmail.com
     Last modified:  3/12/2022
 """
-from turtle import end_fill
 import cv2
 import numpy as np
 import os
