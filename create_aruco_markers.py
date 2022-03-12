@@ -14,10 +14,10 @@ from aruco_dict import ARUCO_DICT
 DEBUG: bool = False
 SIZE: int   = 300
 BORDER: int = 1
-OUT_PATH: str = r"C:\Users\pedri\Desktop\ME 297-01_Deep_Learning\Aruco-classification\ArUco Tags"
 
 # User Arguments
-tag_dict: str  = "DICT_6X6_50"
+OUT_PATH: str = r"C:\Users\pedri\Desktop\ME 297-01_Deep_Learning\Aruco-classification\ArUco Tags"
+tag_dict: str  = "DICT_6X6_50" # Maximize the NxN, and Minimize the ID Numbers (e.g., 50) for false id
 tag_id: int    = 1
 
 # Main Program
@@ -47,5 +47,5 @@ def create_marker(tag_dict: str, tag_id: str) -> None:
     cv2.waitKey(0)
 
 if __name__ == "__main__":
-    for i in range(tag_id, 11, 1): # Creates 10 IDs
+    for i in range(tag_id, 5, 1): # Creates 10 IDs
         create_marker(tag_dict, i)
