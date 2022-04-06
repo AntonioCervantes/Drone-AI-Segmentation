@@ -18,8 +18,9 @@ from aruco_dict import ARUCO_DICT
 from create_aruco_markers import tag_dict
 
 # Global Constants
-DEBUG: bool  = False
-VIDEO: bool  = True
+DEBUG: bool      = False
+VIDEO: bool      = True
+VIDEO_WIDTH: int = 1000
 
 # User Arguments
 frame_path: str =  r"C:\Users\pedri\Pictures\Camera Roll\WIN_20220406_06_29_19_Pro.jpg"
@@ -64,8 +65,8 @@ def _detect_aruco(frame: np.ndarray) -> Tuple: # Returns a tuple of (tuple, nump
                                 org = (topLeft[0], topLeft[1] - 15),
                                 fontFace = cv2.FONT_HERSHEY_SIMPLEX,
                                 fontScale = 0.5, 
-                                color = (0, 255, 0), 
-                                thickness = 1)
+                                color = (0, 0, 255), 
+                                thickness = 2)
     if DEBUG: 
         print(type((cX, cY)))
         print(type(frame))
@@ -102,7 +103,7 @@ def main2() -> None:
     while True:
         # Read a single frame
         frame = vs.read() 
-        frame = imutils.resize(frame, width = 600)
+        frame = imutils.resize(frame, width = VIDEO_WIDTH)
     
         (_, output) = _detect_aruco(frame)
         cv2.imshow('Frame', output)
