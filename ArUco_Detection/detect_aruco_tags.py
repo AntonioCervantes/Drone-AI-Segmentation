@@ -2,7 +2,7 @@
     Please modify user arguments and/or global constants to modify the ArUco tag generated.
 
     Author:         Christian Pedrigal, pedrigalchristian@gmail.com
-    Last modified:  3/12/2022
+    Last modified:  4/06/2022
 """
 
 import time
