@@ -1,1 +1,1 @@
-aruco_dict
+     main(frame_path)

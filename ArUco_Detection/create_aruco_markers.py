@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 import os
 
-from aruco_dict import ARUCO_DICT
+from aruco_dict import ARUCO_DICT # Import Key-Values that are compatible with Aruco Dictionary
 
 # Global Constants
 DEBUG: bool = False
@@ -17,7 +17,7 @@ BORDER: int = 1
 
 # User Arguments
 OUT_PATH: str = r"C:\Users\pedri\Desktop\ME 297-01_Deep_Learning\Aruco-classification\ArUco Tags"
-tag_dict: str  = "DICT_6X6_50" # Maximize the NxN, and Minimize the ID Numbers (e.g., 50) for false id
+tag_dict: str  = "DICT_6X6_50" # Maximize the NxN, and Minimize the ID Numbers (e.g., 50) to avoid false id
 tag_id: int    = 1
 
 # Main Program
@@ -38,7 +38,7 @@ def create_marker(tag_dict: str, tag_id: str) -> None:
 
     # 2. Draw marker, based on four arguments: (1) Aruco type, (2) ID, (3) size, (4) input image, (5) borderline type
     in_image: np  = np.zeros((SIZE, SIZE, 1), dtype = "uint8")
-    cv2.aruco.drawMarker(arctype, tag_id, SIZE, in_image, BORDER)
+    cv2.aruco.drawMarker(arctype, tag_id, SIZE, in_image, BORDER) # Draws arctype of ID number of 'tag_id' and size 'SIZE' onto 'in_image' with border number 'BORDER'
     if DEBUG: print(type(tag_id))
 
     # 3. Show image
@@ -46,6 +46,13 @@ def create_marker(tag_dict: str, tag_id: str) -> None:
     cv2.imwrite(os.path.join(OUT_PATH, filename), in_image)
     cv2.waitKey(0)
 
-if __name__ == "__main__":
+def main2() -> None:
+    """For range loop to create 10 IDs."""
     for i in range(tag_id, 5, 1): # Creates 10 IDs
         create_marker(tag_dict, i)
+
+def main() -> None:
+    create_marker(tag_dict, 1)
+
+if __name__ == "__main__":
+    main()
