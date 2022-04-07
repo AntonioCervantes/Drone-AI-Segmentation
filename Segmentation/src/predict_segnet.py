@@ -24,6 +24,44 @@ from utils.data_preprocess import (read_image, read_mask,
                                    tf_dataset, preprocess,
                                    augment_data)
 
+###############
+### Data IO ###
+###############
+
+path = "../data/dataset/semantic_drone_dataset"
+#images = sorted(glob(os.path.join(path, "original_images/*")))
+#masks = sorted(glob(os.path.join(path, "label_images_semantic/*")))
+#print(f"Original images:  {len(images)} - Original masks: {len(masks)}")
+
+#create_dir("../data/dataset/semantic_drone_dataset/new_data/images/")
+#create_dir("../data/dataset/semantic_drone_dataset/new_data/masks/")
+
+save_path = "../data/dataset/semantic_drone_dataset/new_data/"
+
+#augment_data(images, masks, save_path, augment=True)
+
+images = sorted(glob(os.path.join(save_path, "images/*")))
+masks = sorted(glob(os.path.join(save_path, "masks/*")))
+print(f"Augmented images:  {len(images)} - Augmented masks: {len(masks)}")
+
+# Create dataframe
+image_path =  os.path.join(save_path, "images/")
+label_path = os.path.join(save_path, "masks/")
+df_images = create_dataframe(image_path)
+df_masks = create_dataframe(label_path)
+print('Total Images: ', len(df_images))
+#print(df_images)
+
+# Split data
+X_trainval, X_test = train_test_split(df_images['id'], test_size=0.1, random_state=19)
+
+#the same values for images (X) and labels (y)
+y_test = X_test
+
+
+img_test = [os.path.join(image_path, f"{name}.jpg") for name in X_test]
+mask_test = [os.path.join(label_path, f"{name}.png") for name in y_test]
+
 # Define image parameters
 H = 320   #to keep the original ratio 
 W = 480 
@@ -36,7 +74,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 # Load Model
-model = tf.keras.models.load_model("model.h5")
+model = tf.keras.models.load_model("../results/models/model.h5")
 
 # Saving the masks
 for x, y in tqdm(zip(img_test, mask_test), total=len(img_test)):
@@ -108,13 +146,15 @@ for img, mask in zip(img_selection, mask_selection):
     fig, axs = plt.subplots(1, 3, figsize=(20, 20), constrained_layout=True)
 
     axs[0].imshow(x, interpolation = 'nearest')
-    axs[0].set_title('image')
+    axs[0].set_title('Original Image')
     axs[0].grid(False)
 
     axs[1].imshow(y, interpolation = 'nearest')
-    axs[1].set_title('GT')
+    axs[1].set_title('True Mask')
     axs[1].grid(False)
 
     axs[2].imshow(p)
-    axs[2].set_title('prediction')
+    axs[2].set_title('Prediction Mask')
     axs[2].grid(False)
+
+plt.savefig("../results/predictions/predictions.png")
