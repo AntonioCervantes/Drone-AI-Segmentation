@@ -3,6 +3,7 @@ Segmentation/assets/Practice_dataset
 
 Segmentation/assets/.ipynb_checkpoints
 assets/.ipynb_checkpoints
+Segmentation/assets/*.h5
 
 data/
 results/
