@@ -107,9 +107,9 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 # Hyperparameters
-lr = 1e-4
+lr = 1e-3
 batch_size = 4
-epochs = 35
+epochs = 50
 
 # Compile Model
 model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(lr), metrics=['accuracy'])
@@ -124,13 +124,13 @@ valid_steps = len(img_val)//batch_size
 
 # Check points
 checkpointer = [
-    ModelCheckpoint(filepath="./model.h5",monitor='val_loss',verbose=2,save_best_only=True),
+    ModelCheckpoint(filepath="../results/models/model_3.h5",monitor='val_loss',verbose=2,save_best_only=True),
     ReduceLROnPlateau(monitor='val_loss', patience=3, factor=0.1, verbose=2, min_lr=1e-6),
     EarlyStopping(monitor='val_loss', patience=10, verbose=2)
 ]
 
 # Train model
-model.fit(train_dataset,
+history = model.fit(train_dataset,
           steps_per_epoch=train_steps,
           validation_data=valid_dataset,
           validation_steps=valid_steps,
@@ -138,7 +138,25 @@ model.fit(train_dataset,
           callbacks=checkpointer
          )
 
+# Plot training accuracy
+plt.figure()
+plt.plot(history.history['accuracy'])
+plt.plot(history.history['val_accuracy'])
+plt.title('Model Accuracy')
+plt.ylabel('Accuracy')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper left')
+plt.savefig("../results/residuals/accuracy_3.png")
 
+# Plot training loss
+plt.figure()
+plt.plot(history.history['loss'])
+plt.plot(history.history['val_loss'])
+plt.title('Model Loss')
+plt.ylabel('Loss')
+plt.xlabel('Epoch')
+plt.legend(['Train', 'Test'], loc='upper right')
+plt.savefig("../results/residuals/loss_3.png")
 
 
 

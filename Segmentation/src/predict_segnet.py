@@ -74,7 +74,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 # Load Model
-model = tf.keras.models.load_model("../results/models/model.h5")
+model = tf.keras.models.load_model("../results/models/model_2.h5")
 
 # Saving the masks
 for x, y in tqdm(zip(img_test, mask_test), total=len(img_test)):
@@ -157,4 +157,4 @@ for img, mask in zip(img_selection, mask_selection):
     axs[2].set_title('Prediction Mask')
     axs[2].grid(False)
 
-plt.savefig("../results/predictions/predictions.png")
+plt.savefig("../results/predictions/predictions_2.png")
