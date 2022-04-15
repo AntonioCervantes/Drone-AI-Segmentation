@@ -23,7 +23,7 @@ from utils.data_IO import (create_dir, create_dataframe)
 from utils.data_preprocess import (read_image, read_mask, 
                                    tf_dataset, preprocess,
                                    augment_data)
-
+from utils.dimensions import Height, Width
 ###############
 ### Data IO ###
 ###############
@@ -63,8 +63,8 @@ img_test = [os.path.join(image_path, f"{name}.jpg") for name in X_test]
 mask_test = [os.path.join(label_path, f"{name}.png") for name in y_test]
 
 # Define image parameters
-H = 320   #to keep the original ratio 
-W = 480 
+H = Height   #to keep the original ratio 
+W = Width 
 num_classes = 23
 
 #create_dir('../results')  #create the folder for the predictions
@@ -74,7 +74,7 @@ np.random.seed(42)
 tf.random.set_seed(42)
 
 # Load Model
-model = tf.keras.models.load_model("../results/models/model_4.h5")
+model = tf.keras.models.load_model("../results/models/model_5.h5")
 
 # Saving the masks
 for x, y in tqdm(zip(img_test, mask_test), total=len(img_test)):
@@ -157,4 +157,4 @@ for img, mask in zip(img_selection, mask_selection):
     axs[2].set_title('Prediction Mask')
     axs[2].grid(False)
 
-plt.savefig("../results/predictions/predictions_4.png")
+plt.savefig("../results/predictions/predictions_5.png")

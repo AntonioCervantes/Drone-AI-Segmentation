@@ -18,10 +18,11 @@ import matplotlib.pyplot as plt
 from tensorflow.keras.callbacks import ModelCheckpoint, ReduceLROnPlateau, EarlyStopping, Callback
 from tensorflow.keras.utils import plot_model
 import os
+from utils.dimensions import Height, Width
 
 # Image and classes parameters
-H = 320
-W = 480 
+H = Height   
+W = Width 
 num_classes = 23
 
 # Dataset Pipeline used for training the model

@@ -8,6 +8,7 @@ from glob import glob
 from albumentations import RandomCrop, HorizontalFlip, VerticalFlip
 
 from sklearn.model_selection import train_test_split
+from sklearn.model_selection import GridSearchCV
 from PIL import Image
 
 from tensorflow.keras.layers import Input, Conv2D, BatchNormalization, Activation, MaxPool2D, UpSampling2D, Concatenate
@@ -91,13 +92,10 @@ shape = (H, W, 3)
 # Define the number of classes
 num_classes = 23
 
-# Hyperparameters
+# Set some initial hyperparameters for initializing Unet
 lr = 1e-2
-batch_size = 16
-epochs = 200
-
-# Compile Model
-#model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(lr), metrics=['accuracy'])
+batch_size = 4
+epochs = 20
 
 # Define Unet model
 model = mobileunet(shape, num_classes, lr)
@@ -115,18 +113,44 @@ model.summary()
 np.random.seed(42)
 tf.random.set_seed(42)
 
+# Grid of Hyperparameters
+lr = [1e-2, 1e-3]
+batch_size = [4, 8, 12, 25] # Note you can go up to 25 with H=160, W=240
+epochs = [20, 30, 40]
+
+# Add parameters to dictionary
+param_grid= dict(batch_size = batch_size, epochs = epochs, learn_rate = lr)
 
 # Get dataset
-train_dataset = tf_dataset(img_train, mask_train, batch_size)
-valid_dataset = tf_dataset(img_val, mask_val, batch_size)
+#train_dataset = tf_dataset(img_train, mask_train, batch_size)
+#valid_dataset = tf_dataset(img_val, mask_val, batch_size)
 
 # Specify step size
-train_steps = len(img_train)//batch_size
-valid_steps = len(img_val)//batch_size
+#train_steps = len(img_train)//batch_size
+#valid_steps = len(img_val)//batch_size
 
+# Define GridSearch
+grid = GridSearchCV(estimator=model, param_grid=param_grid, cv=3)
+grid_result = grid.fit(X_train, X_val)
+
+print(" Best: %f using %s"
+% (grid_result.best_score_, grid_result.best_params_))
+
+means = grid_result.cv_results_['mean_test_score']
+stds = grid_result.cv_results_['std_test_score']
+params = grid_result.cv_results_['params']
+
+for mean, stdev, param in zip(means, stds, params):
+  print(" %f (%f) with: %r" % (mean, stdev, param))
+
+best_model_history = grid_result.best_estimator_.model.history.history
+
+grid_result.best_estimator_.model.save('model_gridsearch_1.h5')
+
+'''
 # Check points
 checkpointer = [
-    ModelCheckpoint(filepath="../results/models/model_6.h5",monitor='val_loss',verbose=2,save_best_only=True),
+    ModelCheckpoint(filepath="../results/models/model_5.h5",monitor='val_loss',verbose=2,save_best_only=True),
     ReduceLROnPlateau(monitor='val_loss', patience=3, factor=0.1, verbose=2, min_lr=1e-6),
     EarlyStopping(monitor='val_loss', patience=10, verbose=2)
 ]
@@ -148,7 +172,7 @@ plt.title('Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
-plt.savefig("../results/residuals/accuracy_6.png")
+plt.savefig("../results/residuals/accuracy_5.png")
 
 # Plot training loss
 plt.figure()
@@ -158,7 +182,7 @@ plt.title('Model Loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper right')
-plt.savefig("../results/residuals/loss_6.png")
+plt.savefig("../results/residuals/loss_5.png")'''
 
 
 

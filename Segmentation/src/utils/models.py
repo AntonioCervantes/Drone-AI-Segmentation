@@ -3,9 +3,10 @@ from tensorflow.keras.layers import concatenate, Conv2D
 from tensorflow.keras.callbacks import ModelCheckpoint, LearningRateScheduler
 from tensorflow.keras.models import Model
 from tensorflow.keras.optimizers import Adam
+import tensorflow as tf
 
 # Mobile Unet
-def mobileunet(input_size, num_classes):
+def mobileunet(input_size, num_classes, lr):
     inputs = Input(input_size)
 
     conv1  = SeparableConv2D(64, 3, activation='relu', padding='same')(inputs)
@@ -68,4 +69,6 @@ def mobileunet(input_size, num_classes):
     conv10 = Conv2D(num_classes, 1, activation='sigmoid')(conv9)
     
     output = conv10
-    return Model(inputs, output)
+    model = Model(inputs, output)
+    model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(lr), metrics=['accuracy'])
+    return model
