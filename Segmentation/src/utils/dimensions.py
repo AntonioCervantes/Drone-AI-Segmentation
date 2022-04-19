@@ -1,2 +1,2 @@
-Height = 160
-Width = 240
+Height = 320
+Width = 480

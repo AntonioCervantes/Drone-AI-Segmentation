@@ -93,10 +93,12 @@ num_classes = 23
 
 # Hyperparameters
 lr = 1e-2
-batch_size = 16
-epochs = 200
+batch_size = 4
+epochs = 500
 
 # Compile Model
+# Try with higher learning rate: SGD, RMSprop
+# Try doubling neuron number, then half. 
 #model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(lr), metrics=['accuracy'])
 
 # Define Unet model
@@ -126,7 +128,7 @@ valid_steps = len(img_val)//batch_size
 
 # Check points
 checkpointer = [
-    ModelCheckpoint(filepath="../results/models/model_6.h5",monitor='val_loss',verbose=2,save_best_only=True),
+    ModelCheckpoint(filepath="../results/models/model_7.h5",monitor='val_loss',verbose=2,save_best_only=True),
     ReduceLROnPlateau(monitor='val_loss', patience=3, factor=0.1, verbose=2, min_lr=1e-6),
     EarlyStopping(monitor='val_loss', patience=10, verbose=2)
 ]
@@ -148,7 +150,7 @@ plt.title('Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
-plt.savefig("../results/residuals/accuracy_6.png")
+plt.savefig("../results/residuals/accuracy_7.png")
 
 # Plot training loss
 plt.figure()
@@ -158,7 +160,7 @@ plt.title('Model Loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper right')
-plt.savefig("../results/residuals/loss_6.png")
+plt.savefig("../results/residuals/loss_7.png")
 
 
 

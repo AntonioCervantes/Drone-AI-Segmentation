@@ -5,9 +5,17 @@ Segmentation/assets/.ipynb_checkpoints
 assets/.ipynb_checkpoints
 Segmentation/assets/*.h5
 
-data/
-results/
 
+Segmentation/data/dataset/
+Segmentation/data/RGB_color_image_masks
+Segmentation/data/class_dict_seg.csv
+
+Segmentation/results/models
+Segmentation/results/predicted_images
+Segmentation/results/predictions
+Segmentation/results/residuals
 
 Segmentation/assets/models
 assets/models
+
+Segmentation/src/utils/__pycache__
