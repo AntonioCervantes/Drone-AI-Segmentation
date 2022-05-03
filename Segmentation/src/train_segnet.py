@@ -23,7 +23,7 @@ from utils.data_IO import (create_dir, create_dataframe)
 from utils.data_preprocess import (read_image, read_mask, 
                                    tf_dataset, preprocess,
                                    augment_data)
-from utils.models import mobileunet
+from utils.models import mobileunet, unet
 from utils.dimensions import Height, Width
 
 # Show GPUs devices
@@ -92,17 +92,24 @@ shape = (H, W, 3)
 num_classes = 23
 
 # Hyperparameters
-lr = 1e-2
+lr = 1e-4
 batch_size = 4
 epochs = 500
 
 # Compile Model
 # Try with higher learning rate: SGD, RMSprop
-# Try doubling neuron number, then half. 
+# Try doubling neuron number (doubling under performs on val accuracy), then half. 
 #model.compile(loss="categorical_crossentropy", optimizer=tf.keras.optimizers.Adam(lr), metrics=['accuracy'])
 
+n1 = 64/2
+n2 = 128/2
+n3 = 256/2
+n4 = 512/2
+n5 = 1024/2
+
 # Define Unet model
-model = mobileunet(shape, num_classes, lr)
+#model = mobileunet(shape, num_classes, lr,  n1, n2, n3, n4, n5)
+model = unet(shape, num_classes, lr)
 
 # Display model summary
 model.summary()
@@ -128,8 +135,8 @@ valid_steps = len(img_val)//batch_size
 
 # Check points
 checkpointer = [
-    ModelCheckpoint(filepath="../results/models/model_7.h5",monitor='val_loss',verbose=2,save_best_only=True),
-    ReduceLROnPlateau(monitor='val_loss', patience=3, factor=0.1, verbose=2, min_lr=1e-6),
+    ModelCheckpoint(filepath="../results/models/model_14.h5",monitor='val_loss',verbose=2,save_best_only=True),
+    ReduceLROnPlateau(monitor='val_loss', patience=3, factor=0.1, verbose=2, min_lr=1e-8),
     EarlyStopping(monitor='val_loss', patience=10, verbose=2)
 ]
 
@@ -150,7 +157,7 @@ plt.title('Model Accuracy')
 plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
-plt.savefig("../results/residuals/accuracy_7.png")
+plt.savefig("../results/residuals/accuracy.png")
 
 # Plot training loss
 plt.figure()
@@ -160,7 +167,7 @@ plt.title('Model Loss')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper right')
-plt.savefig("../results/residuals/loss_7.png")
+plt.savefig("../results/residuals/loss.png")
 
 
 
