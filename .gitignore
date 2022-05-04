@@ -9,6 +9,7 @@ Segmentation/assets/*.h5
 Segmentation/data/dataset/
 Segmentation/data/RGB_color_image_masks
 Segmentation/data/class_dict_seg.csv
+Segmentation/data/*
 
 Segmentation/results/models
 Segmentation/results/predicted_images
