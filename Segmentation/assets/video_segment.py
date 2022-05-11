@@ -40,13 +40,13 @@ if __name__ == "__main__":
         frame = frame.astype(np.float32)
         mask = model.predict(np.expand_dims(frame, axis=0))[0]
 
-        mask = np.argmax(mask, axis=-1)
-        mask = np.expand_dims(mask, axis=-1)
+        mask = np.argmax(mask, axis=-1) # Return indices of max values along axis
+        mask = np.expand_dims(mask, axis=-1) # From 1 dimension (x) to 2 dimension (x,)
         num_classes = 23
-        mask = mask * (255/num_classes)
-        mask = mask.astype(np.int32)
-        mask = np.concatenate([mask, mask, mask], axis=2)
-        mask = mask.astype(np.uint8)
+        mask = mask * (255/num_classes)  # Divide number of classes across 255 evenly
+        mask = mask.astype(np.int32) # -(2^16) to (2^16 - 1)
+        mask = np.concatenate([mask, mask, mask], axis=2) # 3-Layer mask 
+        mask = mask.astype(np.uint8) # 0 to 255
 
         #combine_frame = original_frame * mask
         #combine_frame = combine_frame.astype(np.uint8)
