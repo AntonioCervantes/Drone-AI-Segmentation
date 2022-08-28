@@ -4,7 +4,8 @@ import tensorflow as tf
 
 if __name__ == "__main__":
     """ Video Path """
-    video_path = "../data/drone_vids/clip1/clip1.mp4"
+    video_path = "../data/drone_vids/shade_exp/car/evening/evening.mp4"
+    output_path = '../data/drone_vids/shade_exp/car/evening/output.mp4'
 
     """ Load the model """
     model = tf.keras.models.load_model("../results/models/model_11.h5")
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     H = 320
     W = 480
     fourcc = cv2.VideoWriter_fourcc(*'mp4v')
-    out = cv2.VideoWriter('../data/drone_vids/clip1/output.mp4', fourcc, 10, (W, H), True)
+    out = cv2.VideoWriter(output_path, fourcc, 30, (W, H), True)
 
     cap = cv2.VideoCapture(video_path)
     idx = 0
@@ -55,8 +56,8 @@ if __name__ == "__main__":
         #combine_frame = combine_frame.astype(np.uint8)
 
         # Write Predictions
-        cv2.imwrite(f"../data/drone_vids/clip1/img/pred/{idx}.png", mask)
-        cv2.imwrite(f"../data/drone_vids/clip1/img/orig/original_{idx}.png", original_frame)
+        cv2.imwrite(f"../data/drone_vids/shade_exp/car/evening/img/pred/{idx}.png", mask)
+        cv2.imwrite(f"../data/drone_vids/shade_exp/car/evening/img/orig/original_{idx}.png", original_frame)
         idx += 1
 
-        #out.write(mask)
+        out.write(mask)
